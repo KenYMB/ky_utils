@@ -1,4 +1,4 @@
-%% ver. 20180511
+%% ver. 20190819
 
 SetupMyFunction	% add functions below to search path
 
@@ -37,6 +37,10 @@ rounddeci	% round to nearest decimal
 roundnear	% replace matrix elements with the nearest values in input list
 saveauto	% basically same as SAVE, but automatically adds '-v7.3' option
 sbjdlginp	% applied function of INPUTDLG
+nearestpoint
+nanrms
+corrpair
+meanelement
 
 arrangeinrect	% estimate suitable rencangle for subplot
 bandplotH_avg	% plot averaged line with error bands
@@ -47,6 +51,7 @@ hide	% hide figure window
 num2handle	% convert handle numbers into graphics object handles
 renewclim	% load figure file, update figure properties, and overwrite the figure
 resetfig	% reset figure window
+halfjet
 
 SelectAudioDevice	% show window to select an audio device for PsychPortAudio
 myKeyCheck	% reset keybord input for PTB
