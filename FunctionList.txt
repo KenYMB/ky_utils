@@ -1,0 +1,54 @@
+%% ver. 20180511
+
+SetupMyFunction	% add functions below to search path
+
+SetDefault	% set default value for variable
+cellfind	% find patterns from cell array
+cellstrfind	% find strings from cellstr array
+cellstrsplit	% split strings in cellstr array
+colorMat	% apply color vector to the input matrix
+dnum2hms	% converts serial date number to time
+easyfilt	% roughly design and apply butterworth filter
+error_backtraceoff	% output ERROR without back trace
+findarray	% search num-array from the input matrix
+fit_psychometric	% compute sigmoid fitting without Curve Fitting Toolbox
+fit_psychometric_gpu	%% unfinished %%
+getelement	% outputs specified components of matrix
+getfilelist	% list folder contents as cellstr array
+imcolsample	% show color sample
+int2ordinal	% convert positive integer to ordinal character vector.
+invrotmat3D	% estimate rotation axis and angle from three dimensional rotation matrix
+limits	% apply upper and lower limits on input components
+isorth	% determin whether input is orthogonal system
+mail	% send an e-mail
+mgcd	% estimate common decimal divisor
+mk_sigmoid	% sigmoid function
+modmod	% compute MOD and then replace 0 with the modulus
+naneq	% equality, considering nans and empties
+nearlyeq	% find approximately equal value and return the index
+normalizeV	% inp/sum(inp)
+npermsk	% compute partial permutation
+num2cellstr	% nvert numeric array into cellstr array
+path_rel2abs	% convert relative path into absolute path
+readtablestr	% create table from file
+rmempty	% remove empty components 
+rotmat3D	% compute three dimensional rotation matrix
+rounddeci	% round to nearest decimal
+roundnear	% replace matrix elements with the nearest values in input list
+saveauto	% basically same as SAVE, but automatically adds '-v7.3' option
+sbjdlginp	% applied function of INPUTDLG
+
+arrangeinrect	% estimate suitable rencangle for subplot
+bandplotH_avg	% plot averaged line with error bands
+clim	% set color limits for a figure
+figsize	% modify figure window size
+handle2num	% convert graphics object handles into handle numbers
+hide	% hide figure window
+num2handle	% convert handle numbers into graphics object handles
+renewclim	% load figure file, update figure properties, and overwrite the figure
+resetfig	% reset figure window
+
+SelectAudioDevice	% show window to select an audio device for PsychPortAudio
+myKeyCheck	% reset keybord input for PTB
+
+SetupMRVista	% add MRVista toolbox to search path
