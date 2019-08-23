@@ -9,6 +9,7 @@ function    varargout = SetupKyUtils
 % 20180517 Yuasa: 'Setup_ft_utilities' is a copy of this function (partly modified)
 % 20190621 Yuasa: comment out 'savepath'
 % 20190819 Yuasa: change name from 'SetupMyFunction' to 'SetupKyUtils'
+%                 exclude directories start with . (ex .git)
 
 nargoutchk(0,1);
 
@@ -38,28 +39,23 @@ locpos = {'..'};
     
 pathlist = strsplit(pathlist,pathsep)';
 
+%-- remove hidden dir
+idir = ~cellfun(@isempty,regexp(pathlist,'\\\.','once'));
+pathlist(idir) = [];
+
 %-- remove calibration related dir
-for idir = length(pathlist):-1:1
-    if ~isempty(strfind(pathlist{idir},'CalibratedData')) || ~isempty(strfind(pathlist{idir},'mytransformation'))
-        pathlist(idir) = [];
-    end
-end
+idir = ~cellfun(@isempty,regexp(pathlist,'\\CalibratedData','once')) |...
+       ~cellfun(@isempty,regexp(pathlist,'\\mytransformation','once'));
+pathlist(idir) = [];
 
 %-- remove private dir
-for idir = length(pathlist):-1:1
-    if strfind(pathlist{idir},'ft_private')
-        pathlist(idir) = [];
-    end
-end
+idir = ~cellfun(@isempty,regexp(pathlist,'\\ft_private','once'));
+pathlist(idir) = [];
 
 %-- set low priority for ft_fix
-lowPpath = {};
-for idir = length(pathlist):-1:1
-    if strfind(pathlist{idir},'ft_fix')
-        lowPpath       = [lowPpath; pathlist(idir)];
-        pathlist(idir) = [];
-    end
-end
+idir = ~cellfun(@isempty,regexp(pathlist,'\\ft_fix','once'));
+lowPpath = pathlist(idir);
+pathlist(idir) = [];
 
 %-- output
 pathlist  = strjoin(pathlist,pathsep);

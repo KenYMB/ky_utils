@@ -51,18 +51,10 @@ catch
     error('''pettern'' and ''exclude_pattern'' must be a a character vector or cellstr-array.');
 end
 
-% find
+% find pattern
 I_l  = zeros([numel(C), numel(patterns)]);
 for l = 1:numel(patterns)
     pattern = ['^' patterns{l} '$'];
-    
-    % change for expression (\* -> ..*)
-    wildidx = strfind(pattern,'\*');
-    for t = length(wildidx):-1:1
-        pattern = [pattern(1:wildidx(t)-1) '..' pattern((wildidx(t)+1):end)];
-    end
-        
-    % find pattern
     I_l(:,l) = ~cellfun(@isempty,regexp(C,pattern,'once'));
 end
 
