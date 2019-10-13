@@ -1,6 +1,6 @@
 function  pink_data = pinknoise(n,AB,Fs,ty,Ff)
 
-% pink_data = pinknoise(n,Fs,AB,[ty],[Ff])
+% pink_data = pinknoise(n,AB,Fs,[ty],[Ff])
 %
 % n : number of samples (seconds * Fs)
 % AB: Amplitude (0<AB<1)
@@ -13,6 +13,7 @@ function  pink_data = pinknoise(n,AB,Fs,ty,Ff)
 %     if length(Ff)==1 -> it works as high pass filter
 
 % 20150611 Yuasa
+% 20191013 modify help
 
 warning('off','stats:lillietest:OutOfRangePHigh')
 
