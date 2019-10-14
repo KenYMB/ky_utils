@@ -13,7 +13,7 @@ function  pink_data = pinknoise(n,AB,Fs,ty,Ff)
 %     if length(Ff)==1 -> it works as high pass filter
 
 % 20150611 Yuasa
-% 20191013 modify help
+% 20191013 modify help & bug fix for filtering
 
 warning('off','stats:lillietest:OutOfRangePHigh')
 
@@ -33,20 +33,21 @@ if exist('lillietest','file')
 end
 
 % Generate noise filter
-Flist = linspace(0,Fs,ceil(n/2));
+Fn = Fs/2;
+Flist = linspace(0,Fn,ceil(n/2));
 
 switch ty
     case 0  % pinknoise
-        F=Fs./Flist;                % 実数領域のフィルタ形状の定義
+        F=Fn./Flist;                % 実数領域のフィルタ形状の定義
     case 1  % whitenoise
         F=ones(1,ceil(n/2));       	% 実数領域のフィルタ形状の定義
     case 2  % brownnoise
-        F=(Fs./Flist).^2;       	% 実数領域のフィルタ形状の定義
+        F=(Fn./Flist).^2;       	% 実数領域のフィルタ形状の定義
 end
 
 if ~isempty(Ff)
-    if (length(Ff)==1 && Ff <= Fs/2) ||...
-            (length(Ff)==2 && Ff(2) <= Fs/2 && Ff(1)<Ff(2) && Ff(1)>=0)
+    if (length(Ff)==1 && Ff <= Fn) ||...
+            (length(Ff)==2 && Ff(2) <= Fn && Ff(1)<Ff(2) && Ff(1)>=0)
         % hpf
         temp = abs(Flist - Ff(1));
         hpf = find(temp == min(temp),1,'last');
