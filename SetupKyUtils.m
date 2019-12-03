@@ -10,6 +10,7 @@ function    varargout = SetupKyUtils
 % 20190621 Yuasa: comment out 'savepath'
 % 20190819 Yuasa: change name from 'SetupMyFunction' to 'SetupKyUtils'
 %                 exclude directories start with . (ex .git)
+% 20191223 Yuasa: minor fix for UNIX
 
 nargoutchk(0,1);
 
@@ -39,21 +40,25 @@ locpos = {'..'};
     
 pathlist = strsplit(pathlist,pathsep)';
 
+if ispc,    filesepexp = '\\';
+else,       filesepexp = filesep;
+end
+
 %-- remove hidden dir
-idir = ~cellfun(@isempty,regexp(pathlist,'\\\.','once'));
+idir = ~cellfun(@isempty,regexp(pathlist,[filesepexp '\.'],'once'));
 pathlist(idir) = [];
 
 %-- remove calibration related dir
-idir = ~cellfun(@isempty,regexp(pathlist,'\\CalibratedData','once')) |...
-       ~cellfun(@isempty,regexp(pathlist,'\\mytransformation','once'));
+idir = ~cellfun(@isempty,regexp(pathlist,[filesepexp 'CalibratedData'],'once')) |...
+       ~cellfun(@isempty,regexp(pathlist,[filesepexp 'mytransformation'],'once'));
 pathlist(idir) = [];
 
 %-- remove private dir
-idir = ~cellfun(@isempty,regexp(pathlist,'\\ft_private','once'));
+idir = ~cellfun(@isempty,regexp(pathlist,[filesepexp 'ft_private'],'once'));
 pathlist(idir) = [];
 
 %-- set low priority for ft_fix
-idir = ~cellfun(@isempty,regexp(pathlist,'\\ft_fix','once'));
+idir = ~cellfun(@isempty,regexp(pathlist,[filesepexp 'ft_fix'],'once'));
 lowPpath = pathlist(idir);
 pathlist(idir) = [];
 
@@ -72,7 +77,7 @@ end
 
 function APATH = absolute_path(RPATH) 
 
-if ~ischar(RPATH), error('Input value is not path.'); end; 
+if ~ischar(RPATH), error('Input value is not path.'); end 
 
 [dirname, filename, ext] = fileparts(RPATH);
 [num,pathinfo] = fileattrib(dirname);
