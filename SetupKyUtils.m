@@ -40,9 +40,7 @@ locpos = {'..'};
     
 pathlist = strsplit(pathlist,pathsep)';
 
-if ispc,    filesepexp = '\\';
-else,       filesepexp = filesep;
-end
+filesepexp =  regexptranslate('escape',filesep);
 
 %-- remove hidden dir
 idir = ~cellfun(@isempty,regexp(pathlist,[filesepexp '\.'],'once'));
