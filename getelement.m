@@ -6,6 +6,8 @@ function    varargout = getelement(datamat, varargin)
 %   getelement(A,i1,':','cell','cat') is same as [A{i1,:}]
 
 % 20170825 Yuasa
+% 20191227 Yuasa: fix for the case the number of arguments is less than the
+%                 dimension of data matrix
 
 if nargin < 2
     vargin{1} = ':';
@@ -29,10 +31,25 @@ else
     iscat = false;
 end
 
+%-- reshape
+dimelem = nargin -1 -iscell -iscat;
+dimmat  = ndims(datamat);
+if dimelem < dimmat
+    if dimelem == 1
+        newsiz = [numel(datamat) 1];
+    else
+        newsiz = [size(datamat,1:(dimelem-1)) prod(size(datamat,dimelem:dimmat))];
+    end
+    datamat = reshape(datamat,newsiz);
+end
+
 %-- find 'end'
 for iinp = 1:length(varargin)
     if ischar(varargin{iinp}) && ~strcmp(varargin{iinp},':')
-        varargin{iinp} = strrep(varargin{iinp},'end',num2str(size(datamat,iinp)));
+        if iinp > ndims(datamat),   dimsiz = 1;
+        else,                       dimsiz = num2str(size(datamat,iinp));
+        end
+        varargin{iinp} = strrep(varargin{iinp},'end',dimsiz);
         varargin{iinp} = eval(varargin{iinp});
     end    
 end
