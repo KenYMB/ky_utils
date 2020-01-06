@@ -34,7 +34,7 @@ end
 %-- reshape
 dimelem = nargin -1 -iscell -iscat;
 dimmat  = ndims(datamat);
-if dimelem < dimmat
+if ~isvector(datamat) &&  dimelem < dimmat
     if dimelem == 1
         newsiz = [numel(datamat) 1];
     else
