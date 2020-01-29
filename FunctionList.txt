@@ -13,7 +13,8 @@ error_backtraceoff	% output ERROR without back trace
 findarray	% search num-array from the input matrix
 fit_psychometric	% compute sigmoid fitting without Curve Fitting Toolbox
 fit_psychometric_gpu	%% unfinished %%
-getelement	% outputs specified components of matrix
+getelement	% output specified elements of matrix
+replelement	% replace specified elements of matrix with specified value
 getfilelist	% list folder contents as cellstr array
 imcolsample	% show color sample
 int2ordinal	% convert positive integer to ordinal character vector.
@@ -41,6 +42,8 @@ nearestpoint
 nanrms
 corrpair
 meanelement
+
+setboundsinfunc
 
 arrangeinrect	% estimate suitable rencangle for subplot
 bandplotH_avg	% plot averaged line with error bands
