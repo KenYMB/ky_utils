@@ -2,13 +2,23 @@ function y = meanelement(x,dim,flag,flag2)
 
 % M = MEANELEMENT(A)
 % M = MEANELEMENT(A,dim)
-%   MEANELEMENT returns the mean of the each adjoining element.
+% M = MEANELEMENT(A,'all')
+% M = MEANELEMENT(A,vecdim)
+% M = MEANELEMENT(...,OUTTYPE)
+% M = MEANELEMENT(...,NANFLAG)
+%   MEANELEMENT returns the mean of the adjacent elements of A along
+%   the first array dimension whose size does not equal 1.
+%   For usage of each option see MEAN.
 % 
-% see also: mean
+% Example:
+% 
+% see also: MEAN
 
-% 20190410 Yuasa
+% 20200204 Yuasa: enable the dim options of 'all' and vecdim
+% 20190410 Yuasa: modified from built-in MEAN
 
-isDimSet = nargin > 1 && ~ischar(dim);
+isDimSet = nargin > 1 && ((~ischar(dim) && ~(isstring(dim) && isscalar(dim))) || ...
+    (~isInvalidText(dim) && strncmpi(dim,'all',max(strlength(dim), 1))));
 isFlag2Set = nargin >= 4;
 
 if nargin == 1 || (nargin == 2 && isDimSet)
@@ -37,6 +47,7 @@ else % nargin >= 3 || (nargin == 2 && ~isDimSet)
         
 end
 
+%-- set default value in DIM and proceed for 'all'
 if ~isDimSet
     % preserve backward compatibility with 0x0 empty
     if isequal(x,[])
@@ -46,65 +57,80 @@ if ~isDimSet
     
     dim = find(size(x)~=1,1);
     if isempty(dim), dim = 1; end
+elseif (ischar(dim)||isstring(dim)) && ~isInvalidText(dim) && strncmpi(dim,'all',max(strlength(dim), 1))
+    dim = 1:ndims(x);
 end
+dim  = reshape(unique(dim,'sorted'),1,[]);
 
-%-- construct new matrix
-setelmnt1 = '';  setelmnt2 = '';
-for idim = 1:ndims(x)
-    if idim == dim
-        setelmnt1 = [setelmnt1, '1:(end-1),'];
-        setelmnt2 = [setelmnt2, '2:end,'];
-    else
-        setelmnt1 = [setelmnt1, ':,'];
-        setelmnt2 = [setelmnt2, ':,'];
+if length(dim)>1
+    if omitnan, flag2 = 'omitnan';
+    else,       flag2 = 'includenan';
     end
-end
-setelmnt1(end) = [];  setelmnt2(end) = [];
-eval(sprintf('x1 = x(%s);',setelmnt1));
-eval(sprintf('x2 = x(%s);',setelmnt2));
-
-%-- update 'x' & 'dim'
-dim = max(ndims(x),dim)+1;
-x   = cat(dim,x1,x2);
-
-if ~isobject(x) && isinteger(x) 
-    isnative = (lower(flag(1)) == 'n');
-    if intmin(class(x)) == 0  % unsigned integers
-        y = sum(x,dim,flag);
-        if (isnative && all(y(:) < intmax(class(x)))) || ...
-                (~isnative && all(y(:) <= flintmax))
-            % no precision lost, can use the sum result
-            y = y/size(x,dim);
-        else  % throw away and recompute
-            y = intmean(x,dim,isnative);
-        end
-    else  % signed integers
-        ypos = sum(max(x,0),dim,flag);
-        yneg = sum(min(x,0),dim,flag);
-        if (isnative && all(ypos(:) < intmax(class(x))) && ...
-                all(yneg(:) > intmin(class(x)))) || ...
-                (~isnative && all(ypos(:) <= flintmax) && ...
-                all(yneg(:) >= -flintmax))
-            % no precision lost, can use the sum result
-            y = (ypos+yneg)/size(x,dim);
-        else  % throw away and recompute
-            y = intmean(x,dim,isnative);
-        end
+    %%% loop for VECDIM
+    y = x;
+    for idim = fliplr(dim)
+        y = meanelement(y,idim,flag,flag2);
     end
 else
-    if omitnan
-        
-        % Compute sum and number of NaNs
-        m = sum(x, dim, flag, 'omitnan');
-        nr_nonnan = size(x, dim) - matlab.internal.math.countnan(x, dim);
-        
-        % Divide by the number of non-NaNs.
-        y = m ./ nr_nonnan;
-    else
-        y = sum(x, dim, flag)/size(x,dim);
+    %%% main procedure
+    %-- construct new matrix
+    setelmnt1 = '';  setelmnt2 = '';
+    for idim = 1:ndims(x)
+        if idim == dim
+            setelmnt1 = [setelmnt1, '1:(end-1),'];
+            setelmnt2 = [setelmnt2, '2:end,'];
+        else
+            setelmnt1 = [setelmnt1, ':,'];
+            setelmnt2 = [setelmnt2, ':,'];
+        end
     end
-end
+    setelmnt1(end) = [];  setelmnt2(end) = [];
+    eval(sprintf('x1 = x(%s);',setelmnt1));
+    eval(sprintf('x2 = x(%s);',setelmnt2));
+
+    %-- update 'x' & 'dim'
+    dim = max(ndims(x),dim)+1;
+    x   = cat(dim,x1,x2);
+
+    if ~isobject(x) && isinteger(x) 
+        isnative = (lower(flag(1)) == 'n');
+        if intmin(class(x)) == 0  % unsigned integers
+            y = sum(x,dim,flag);
+            if (isnative && all(y(:) < intmax(class(x)))) || ...
+                    (~isnative && all(y(:) <= flintmax))
+                % no precision lost, can use the sum result
+                y = y/size(x,dim);
+            else  % throw away and recompute
+                y = intmean(x,dim,isnative);
+            end
+        else  % signed integers
+            ypos = sum(max(x,0),dim,flag);
+            yneg = sum(min(x,0),dim,flag);
+            if (isnative && all(ypos(:) < intmax(class(x))) && ...
+                    all(yneg(:) > intmin(class(x)))) || ...
+                    (~isnative && all(ypos(:) <= flintmax) && ...
+                    all(yneg(:) >= -flintmax))
+                % no precision lost, can use the sum result
+                y = (ypos+yneg)/size(x,dim);
+            else  % throw away and recompute
+                y = intmean(x,dim,isnative);
+            end
+        end
+    else
+        if omitnan
+
+            % Compute sum and number of NaNs
+            m = sum(x, dim, flag, 'omitnan');
+            nr_nonnan = size(x, dim) - matlab.internal.math.countnan(x, dim);
+
+            % Divide by the number of non-NaNs.
+            y = m ./ nr_nonnan;
+        else
+            y = sum(x, dim, flag)/size(x,dim);
+        end
+    end
     
+end
 end
 
 
@@ -201,4 +227,9 @@ function [flag, omitnan] = parseInputs(flag, flag2, isFlag2Set)
             omitnan = s2(1);
         end
     end
+end
+
+function tf = isInvalidText(str)
+tf = (ischar(str) && ~isrow(str)) || ...
+     (isstring(str) && ~(isscalar(str) && (strlength(str) > 0)));
 end

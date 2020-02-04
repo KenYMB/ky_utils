@@ -1,4 +1,4 @@
-%% ver. 20190819
+%% ver. 20200204
 
 SetupMyFunction	% add functions below to search path
 
@@ -15,6 +15,7 @@ fit_psychometric	% compute sigmoid fitting without Curve Fitting Toolbox
 fit_psychometric_gpu	%% unfinished %%
 getelement	% output specified elements of matrix
 replelement	% replace specified elements of matrix with specified value
+meanelement	% means of the adjacent elements
 getfilelist	% list folder contents as cellstr array
 imcolsample	% show color sample
 int2ordinal	% convert positive integer to ordinal character vector.
@@ -38,12 +39,12 @@ rounddeci	% round to nearest decimal
 roundnear	% replace matrix elements with the nearest values in input list
 saveauto	% basically same as SAVE, but automatically adds '-v7.3' option
 sbjdlginp	% applied function of INPUTDLG
+decimate_col	% compute decimate along the first array dimension
 nearestpoint
 nanrms
 corrpair
-meanelement
 
-setboundsinfunc
+setboundsinfunc	% set bounds in function and return NaN for arguments out of bounds
 
 arrangeinrect	% estimate suitable rencangle for subplot
 bandplotH_avg	% plot averaged line with error bands
@@ -54,7 +55,9 @@ hide	% hide figure window
 num2handle	% convert handle numbers into graphics object handles
 renewclim	% load figure file, update figure properties, and overwrite the figure
 resetfig	% reset figure window
-halfjet
+halfjet	% colormap constructed with half colors of jet
+
+plotbox	% plot box/rectangle
 
 SelectAudioDevice	% show window to select an audio device for PsychPortAudio
 myKeyCheck	% reset keybord input for PTB
