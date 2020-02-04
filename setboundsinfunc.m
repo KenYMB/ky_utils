@@ -12,15 +12,15 @@ function varargout = setboundsinfunc(lbin,ubin,lbout,ubout,func,varargin)
 % 
 % [output1,output2,...] = setboundsinfunc(lb_input,up_input,lb_output,ub_output,func,input1,input2,...,Name,Value)
 %   Following option is available
-%   - 'OutputMode'  = 'constrain'(default), 'nan','nans','zeros'
+%   - 'OutputMode'  = 'constrain'(default), 'nan','zero'
 %           'constrain': setboundsinfunc constrains inputs and outputs to satisfy the bounds
 %           'nan':       setboundsinfunc outputs NaN when inputs or outputs exceed the bounds
-%           'nans':      replae outputs with NaNs (keep data size)
-%           'zeros':     replae outputs with zeros (keep data size)
+%           'inf':       setboundsinfunc outputs Inf when inputs or outputs exceed the bounds
+%           'zero':      setboundsinfunc outputs 0 when inputs or outputs exceed the bounds
 %   
 
 % 20200127 Yuasa
-% 20200128 Yuasa: add options 'nans','zeros'
+% 20200130 Yuasa: Upgrade <OutputMode>
 % 
 % Using: cellfind
 
@@ -37,7 +37,7 @@ optidx = cellfind(varargin,'OutputMode');
 assert(isempty(optidx)||max(optidx)<length(varargin),'Invalid Option');
 if ~isempty(optidx)
     OutputMode = lower(varargin{optidx(1)+1});
-    assert(ischar(OutputMode)&&ismember(OutputMode,{'constrain','nan','nans','zeros'}),'Invalid Option');
+    assert(ischar(OutputMode)&&ismember(OutputMode,{'constrain','nan','inf','-inf','zero'}),'Invalid Option');
 end
 varargin([optidx, optidx+1]) = [];
     
@@ -67,11 +67,6 @@ if ~iscell(lbout), lbout = {lbout};   end
 if ~iscell(ubout), ubout = {ubout};   end
 lbout = [reshape(lbout,1,[]),cell(1,numout-numel(lbout))];
 ubout = [reshape(ubout,1,[]),cell(1,numout-numel(ubout))];
-%%% skip function to output nan
-if outerflg_in && strcmp(OutputMode,'nan')
-    varargout(:) = {nan};
-    return;
-end
 %%% call function
 [varargout{:}] = func(varargin{:});
 %%% loop for outputs
@@ -89,9 +84,10 @@ for iout = 1:numout
     end
     if outerflg_out || outerflg_in
       switch OutputMode
-        case 'nan',     varargout{iout} = nan;
-        case 'nans',    varargout{iout} = nan(size(varargout{iout}));
-        case 'zeros',   varargout{iout} = zeros(size(varargout{iout}));
+        case 'nan',    varargout{iout} = nan(size(varargout{iout}));
+        case 'inf',    varargout{iout} = inf(size(varargout{iout}));
+        case '-inf',   varargout{iout} = -inf(size(varargout{iout}));
+        case 'zero',   varargout{iout} = zeros(size(varargout{iout}));
       end
     end
 end
