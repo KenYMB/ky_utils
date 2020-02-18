@@ -11,7 +11,7 @@
 %
 % 2016-2017 benjamin.heasly@gmail.com
 
-% 20190819 Yuasa: modify
+% 20190819 Yuasa: modify 'sampleStartup' in ToolboxToolbox
 
 %% Where is ToolboxToolbox installed?
 

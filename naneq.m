@@ -9,7 +9,7 @@ function Eq = naneq(A,B,varargin)
 % 
 % See also, ISEQUALN
 
-% using: cellfind
+% Dependency: cellfind
 
 % 20160823 Yuasa
 

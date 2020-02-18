@@ -11,7 +11,7 @@ function [ax, th] = invrotmat3D(rot)
 % 
 % See also: rotmat3D
 
-% Using: isorth
+% Dependency: isorth
 
 % 20180329 Yuasa
 % 20180523 Yuasa: minor fix for irregular

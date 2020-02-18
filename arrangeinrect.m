@@ -1,53 +1,78 @@
-function [nx,ny,nrate] = arrangeinrect(num,bestrate,allowrate,strict)
+function [nx,ny,nrate] = arrangeinrect(num,varargin)
 
-% ARRANGEINRECT gives x and y length to arrange N items in a rectangle.
-% If 'strict' is set, this function outputs error when appropriate x,y pair
-% is not found. Otherwise, this function run through even if the rate of
-% x/y is out of the range between best_rate and allow_rate.
+% ARRANGEINRECT gives x and y length to arrange N items in a rectangle with
+% the least blank panels. The priority is 1. to sutisfy the bouds of allow_rate, 
+% 2. to minimize the number of blank panels, 3. to have the closest x/y rate 
+% to the best_rate, 4. to have the closest x/y rate to the allow_rate(1).
+% If it is impossible to arrange N with allow_rate, ARRANGEINRECT returns
+% alternative pairs of x,y out of allow_rate, or reruns error for 'strict'
+% mode. Here, the priority is 1. to have the closest x/y rate to the best_rate, 
+% 2. to have the closest x/y rate to the allow_rate(1).
 % 
 % Usage: 
 %   [x,y]     = arrangeinrect(N,best_rate,allow_rate)
+%   [x,y,x/y] = arrangeinrect(N,best_rate,allow_rate)
 %   [x,y,x/y] = arrangeinrect(N,best_rate,allow_rate,'strict')
+%   [x,y,x/y] = arrangeinrect(N,best_rate,allow_rate,'silent')
 % 
 % Inputs: 
-%   N:          vector, numbers of items to arrange
-%   best_rate:  number, desired rate of x/y (default=1.0)
-%   allow_rate: [min max], the rate of x/y between the numbers of allow_rate
-%               is adopted preferentially (default=[best_rate 2.0])
+%   N:          numeric-array, numbers of items to arrange
+%   best_rate:  number, desired rate of x/y (default = 1.0)
+%   allow_rate: vector, bounds of x/y rate to find appropriate pairs of [x,y]
+%                       (default = best_rate.*[1.0 2.0])
+%               if allow_rate is scalar, the bounds set as [best_rate allow_rate]
+% 
 
 % 20170330 Yuasa
 % 20190423 Yuasa: change usage of allow_rate
+% 20200218 Yuasa: update for latest MATLAB version (numeric arrays are inhibited in warning)
+
+% Dependency: error_backtraceoff
 
 %-- set parameters
 assert(nargin>=1,message('MATLAB:minrhs'));
-if nargin>=4 && strcmp(strict,'strict')
-    isstrict = true;
-else
-    isstrict = false;
+assert(nargin<=5,message('MATLAB:maxrhs'));
+assert(isnumeric(num),'MATLAB:arrangeinrect:nonNumericInput','''N'' must be a number');
+% bestrate,allowrate,strict
+isstrict = false;
+issilent = false;
+if nargin>1 && ischar(varargin{end}) 
+    if strcmp(varargin{end},'strict')
+        isstrict = true;
+    elseif strcmp(varargin{end},'silent')
+        issilent = true;
+    end
 end
-if nargin<2 || isempty(bestrate),
+if nargin>2 && ischar(varargin{end-1}) 
+    if strcmp(varargin{end-1},'strict')
+        isstrict = true;
+    elseif strcmp(varargin{end-1},'silent')
+        issilent = true;
+    end
+end
+if (nargin - double(isstrict) - double(issilent))<2 || isempty(varargin{1})
     bestrate = 1.0;
-elseif isnumeric(bestrate)
+else
+    bestrate = varargin{1};
+end
+if isnumeric(bestrate)
     bestrate = bestrate(1);
-elseif ischar(bestrate) && strcmp(strict,'strict')
-    isstrict = true;
-    bestrate = 1.0;
 else
-    error('MATLAB:arrangeinrect:nonNumericInput','''bestrate'' must be a number')
+    error('MATLAB:arrangeinrect:nonNumericInput','''best_rate'' must be a number')
 end
-if nargin<3 || isempty(allowrate),
-    allowrate = [bestrate 2.0];
-elseif isnumeric(allowrate)
-    if numel(allowrate)<2
+if (nargin - double(isstrict) - double(issilent))<3 || isempty(varargin{2})
+    allowrate = bestrate.*[1.0 2.0];
+else
+    allowrate = varargin{2};
+end
+if isnumeric(allowrate)
+    if isscalar(allowrate)
         allowrate = [bestrate allowrate];
     else
         allowrate = reshape(allowrate(1:2),1,[]);
     end
-elseif ischar(allowrate) && strcmp(strict,'strict')
-    isstrict = true;
-    allowrate = [bestrate 2.0];
 else
-    error('MATLAB:arrangeinrect:nonNumericInput','''allowrate'' must be a number')
+    error('MATLAB:arrangeinrect:nonNumericInput','''allow_rate'' must be a number')
 end
 
 nx    = zeros(numel(num),1);
@@ -56,8 +81,19 @@ ny    = nx;     nrate    = nx;
 dirc  = 2*(diff(allowrate)>=0)-1;
 
 try
-curwarn = warning('off','backtrace');
+if issilent,    curwarn = warning('off');
+else,           curwarn = warning('off','backtrace');
+end
 
+%%% warning for bad allow_rate
+if bestrate<min(allowrate)||bestrate>max(allowrate)
+    if isstrict
+      error_backtraceoff(sprintf('best_rate (%g) is out of allow_rate ([%g %g])',bestrate,allowrate(1),allowrate(2)));
+    else
+      warning('best_rate (%g) is out of allow_rate ([%g %g])',bestrate,allowrate(1),allowrate(2));
+    end
+end
+%%% main
 for ilp=1:numel(num)
 
     begnx   = max(1,round(sqrt(num(ilp)*allowrate(1)))-dirc);
@@ -77,29 +113,20 @@ for ilp=1:numel(num)
         listrate(~valididx) = [];
         listmod  = mod(num(ilp),listny);
         
-        if bestrate>=min(allowrate)&&bestrate<=max(allowrate)
-            %-- test output values
-            if min(listmod)==0
-                bestidx = find(listmod==0,1);
-            elseif max(listmod./listny)>=0.5
-                bestidx = find((listmod./listny)>=0.5,1);
-            else
-                bestidx = 1;
-            end
-        else
-            warning('best_rate (%g) is out of allow_rate ([%g %g])',bestrate,allowrate);
-            %-- get nearest x/y rate pair
-            diffrate = abs(listrate-bestrate);
-            bestidx = find(diffrate == min(diffrate),1);
-        end
+        %-- pick up the least-blank arrangement
+        valididx = listmod==min(listmod);
+        listnx(~valididx)   = [];
+        listny(~valididx)   = [];
+        listrate(~valididx) = [];
     elseif isstrict
-        error_backtraceoff(sprintf('Indicated limitation of rate is too strict (i=%d num=%d)',ilp,num(ilp)));
+        error_backtraceoff(sprintf('allow_rate ([%g %g]) is too strict for %g (i=%d)',allowrate(1),allowrate(2),num(ilp),ilp));
     else
-        warning('allow_rate ([%g %g]) is too strict (i=%d num=%d)',allowrate,ilp,num(ilp));
-        %-- get nearest x/y rate pair
-        diffrate = abs(listrate-bestrate);
-        bestidx = find(diffrate == min(diffrate),1);
+        warning('allow_rate ([%g %g]) is too strict for %g (i=%d)',allowrate(1),allowrate(2),num(ilp),ilp);
     end
+    %-- get nearest x/y rate pair
+    diffrate = abs(listrate-bestrate);
+    bestidx = find(diffrate == min(diffrate),1);
+    %-- get output values
     nx(ilp)     = listnx(bestidx);
     ny(ilp)     = listny(bestidx);
     nrate(ilp)  = listrate(bestidx);

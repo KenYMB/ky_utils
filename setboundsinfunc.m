@@ -22,7 +22,7 @@ function varargout = setboundsinfunc(lbin,ubin,lbout,ubout,func,varargin)
 % 20200127 Yuasa
 % 20200130 Yuasa: Upgrade <OutputMode>
 % 
-% Using: cellfind
+% Dependency: cellfind
 
 %-- check options
 narginchk(6,Inf);

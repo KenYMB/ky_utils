@@ -15,7 +15,7 @@ function [I,varargout] = cellstrfind(C,patterns,expatterns,fullout)
 % If only the exclude_pattern is specified and the pattern is emptry, 
 % it returns all index but supecified in the exclude_pattern.
 
-% 160721: Yuasa: applied from cellfind
+% 160721: Yuasa
 % 160811: Yuasa: enable multiple patterns
 % 160906: Yuasa: bug fix (consider metacaracters as letters)
 % 161219: Yuasa: Speed-up, add I2 output

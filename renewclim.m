@@ -7,7 +7,7 @@ function    renewclim(newclim, savefmt, tardir, varargin)
 %   renewclim([0 1], {'fig','png'});
 %   renewclim([0 1], {'fig','png'}, pwd, 'Position', [0 0 600 400]);
 
-% Using: clim, rmempty
+% Dependency: clim, rmempty
 
 % 20171204: Yuasa
 

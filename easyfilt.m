@@ -12,7 +12,7 @@ function    output = easyfilt(input,ftype,Fs,Fc,order)
 
 % 20180607 Yuasa
 
-% Using: SetDefault
+% Dependency: SetDefault
 
 narginchk(4,inf);
 

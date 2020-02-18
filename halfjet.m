@@ -12,7 +12,7 @@ function J = halfjet(m)
 
 %   Copyright 1984-2015 The MathWorks, Inc.
 
-%  20180828 Yuasa
+%  20180828 Yuasa: modified from jet
 
 if nargin < 1
    f = get(groot,'CurrentFigure');

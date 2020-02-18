@@ -18,7 +18,7 @@ function varargout = figsize(fig,varargin)
 %       if no direction is indicated, the figure state will be reversed
 % 
 
-% Using: maxfig, minfig, figstate
+% Dependency: maxfig, minfig, figstate
 
 % 20170131 Yuasa: unify maxfig, minfig, figstate
 % 20170405 Yuasa: change 'direction' to 'noreverse'

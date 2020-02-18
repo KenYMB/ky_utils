@@ -14,8 +14,7 @@ function I = cellfind(C,pattern)
 
 % ras 11/04: updated to include pattern finding
 % bw/ab    : caught empty Cell condition
-
-% 180510: Yuasa: applied from cellfind
+% 180510: Yuasa: modified
 
 if isempty(C), I = []; return; end
 % if ~ismatrix(C), error('Cellfind doesn''t work on arrays > 2 dimensions.'); end

@@ -12,7 +12,7 @@ function stat = hide(varargin)
 % 
 % See also: CLOSE
 
-% Using: cellfind
+% Dependency: cellfind
 
 % 20180510: Yuasa
 

@@ -20,7 +20,7 @@ function bandplotH_avg(varargin)
 %   bandplotH_avg(cfg, x11,Y11, x12,Y12, x13,Y13,..
 %                      x21,Y21, x22,Y22, x23,Y23);
 
-% Using: nearlyeq
+% SetDefault: nearlyeq
 
 % 20170411 Yuasa
 
