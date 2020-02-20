@@ -1,12 +1,12 @@
 function saveauto(filename, varargin)
 
-% SAVEAUTO is basically same as SAVE except it automatically adds '-v7.3'
-% option if the data size will be larger than 2GB
+% SAVEAUTO is alternative function of SAVE automatically adding '-v7.3'
+% option if the data size will be larger than 2GB.
 % 
 % see also, save
 
 % 20171212 Yuasa
-% 20190816 Yuasa: bug fix ('-struct' did not work well)
+% 20190816 Yuasa: bug fix on '-struct' option
 
 %-- parameter
 savethresh = 2^31;
