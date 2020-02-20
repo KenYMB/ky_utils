@@ -15,9 +15,16 @@ function   varargout = SetDefault(varname, defval, keepempty, chkcell)
 %   keepempty:      false (default) or true, if true, SETDEFAULT assing a
 %                   default value only when the variable is not exist.
 % 
-%   
+%   If 'cell' is specified, SETDEFAULT modifies the variable as cell-array
+%   or assigns a value as cell-array.
 % 
-% Subfield of a structure is also valid.
+% Output:
+%   issetdefault: true or false, if SETDEFAULT assigned a default value
+% 
+% Examples:
+%   SetDefault('SampleRate',512);
+%   SetDefault('cfg.fsample',512);
+% 
 
 % 20170622 Yuasa
 % 20200220 Yuasa: cell mode
