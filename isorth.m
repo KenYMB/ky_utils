@@ -1,6 +1,5 @@
 function [retval, varargout] = isorth(Mat, varargin)
-% ISORTH
-%   determin whether input is orthogonal system
+% ISORTH determins whether input is orthogonal system
 % 
 % Usage: 
 %   ISORTH(A)
