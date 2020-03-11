@@ -1,4 +1,4 @@
-function a = clim(arg1, arg2)
+function varargout = clim(varargin)
 %CLIM COLOR limits.
 %   CL = CLIM             gets the color limits of the current axes.
 %   CLIM([CMIN CMAX])     sets the color limits.
@@ -11,36 +11,47 @@ function a = clim(arg1, arg2)
 %
 %   See also XLIM, YLIM, ZLIM.
 
-%   20170205 Yuasa: modify XLIM
+%   20170205 Yuasa: modify XLIM @matlab2016a
+%   20200311 Yuasa: update for matlab2016b or later
 
-if nargin == 0
-    a = get(gca,'CLim');
+if verLessThan('matlab','9.1')     % matlab2016a or earlier
+    narginchk(0,2);
+    nargoutchk(0,1);
+    if nargin == 0
+        a = get(gca,'CLim');
+    else
+        arg1 = varargin{1};
+        if nargin==2, arg2 = varargin{2}; end
+        if isscalar(arg1) && ishghandle(arg1) && isprop(arg1,'CLim')
+            ax = arg1;
+            if nargin==2
+                val = arg2;
+            else
+                a = get(ax,'CLim');
+                varargout{1} = a;
+                return
+            end
+        else
+            if nargin==2
+                error(message('MATLAB:xlim:InvalidNumberArguments'))
+            else
+                ax = gca;
+                val = arg1;
+            end
+        end
+
+        matlab.graphics.internal.markFigure(ax);
+        if ischar(val)
+            if(strcmp(val,'mode'))
+                a = get(ax,'CLimMode');
+            else
+                set(ax,'CLimMode',val);
+            end
+        else
+            set(ax,'CLim',val);
+        end
+    end
+    if exist('a','var'), varargout{1} = a; end
 else
-    if isscalar(arg1) && ishghandle(arg1) && isprop(arg1,'CLim')
-        ax = arg1;
-        if nargin==2
-            val = arg2;
-        else
-            a = get(ax,'CLim');
-            return
-        end
-    else
-        if nargin==2
-            error(message('MATLAB:clim:InvalidNumberArguments'))
-        else
-            ax = gca;
-            val = arg1;
-        end
-    end
-
-    matlab.graphics.internal.markFigure(ax);
-    if ischar(val)
-        if(strcmp(val,'mode'))
-            a = get(ax,'CLimMode');
-        else
-            set(ax,'CLimMode',val);
-        end
-    else
-        set(ax,'CLim',val);
-    end
+    varargout = matlab.graphics.internal.ruler.rulerFunctions(mfilename, nargout, varargin);
 end
