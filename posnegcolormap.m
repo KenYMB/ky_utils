@@ -110,14 +110,14 @@ clrbinsiz      = max(clrbinsiz1,clrbinsiz2);
 %-- Downsample colormap with higher resolution
 if clrbinsiz1 < clrbinsiz
     if clrbinsiz1>0
-        newmapheight = round(mapheight2 ./ clrbinsiz2 .* clrbinsiz1);
+        newmapheight = round(abs(mapheight2 ./ aprlimit2 .* aprlimit1));
         map1 = resampleColormap(map1,newmapheight);
     else
         map1 = [];
     end
 elseif clrbinsiz2 < clrbinsiz
     if clrbinsiz2>0
-        newmapheight = round(mapheight1 ./ clrbinsiz1 .* clrbinsiz2);
+        newmapheight = round(abs(mapheight1 ./ aprlimit1 .* aprlimit2));
         map2 = resampleColormap(map2,newmapheight);
     else
         map2 = [];
