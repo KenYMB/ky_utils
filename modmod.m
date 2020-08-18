@@ -5,11 +5,11 @@ function yy = modmod(xx,mm)
 %   y = MODMOD(x,m)
 % 
 %   This function outputs 'm' instead of '0',
-%   when mod(x,m) = 0.
+%   when x is a multiple of m.
 % 
 
-%  2016/02/03 Yuasa @MATLAB2014b
-%  2016/05/25 Bug fix
+% 20160203 Yuasa
+% 20160525 Bug fix
+% 20200331 update help document
 
-yy = mod(xx,mm);
-yy(yy == 0) = mm;
+yy = mod(xx-1,mm)+1;
