@@ -10,11 +10,12 @@ colorMat	% apply color vector to the input matrix
 dnum2hms	% converts serial date number to time
 easyfilt	% roughly design and apply butterworth filter
 error_backtraceoff	% output ERROR without back trace
-findarray	% search num-array from the input matrix
 fit_psychometric	% compute sigmoid fitting without Curve Fitting Toolbox
 fit_psychometric_gpu	%% unfinished %%
 getelement	% output specified elements of matrix
 replelement	% replace specified elements of matrix with specified value
+findarray	% search num-array from the input matrix
+replmat     % replace a part of matrix with other matrix
 meanelement	% means of the adjacent elements
 getfilelist	% list folder contents as cellstr array
 imcolsample	% show color sample

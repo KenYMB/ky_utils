@@ -1,7 +1,7 @@
 function varargout = findarray(INP, vec)
 
-% a = FINDARRAY(A, vector);
-% [a, b, ...] = FINDARRAY(A, vector);
+% a = FINDARRAY(A, vector/matrix);
+% [a, b, ...] = FINDARRAY(A, vector/matrix);
 % 
 % search num-array (vector) from the input matrix (A)
 % return 1st index of the target vector
@@ -27,7 +27,7 @@ function varargout = findarray(INP, vec)
     eval(sprintf('culcmat(%s) = vec;',insdim(3:end)));
     
     outpA = zeros(1,prod(sizdiff));
-    for inm = 1:prod(sizdiff);
+    for inm = 1:prod(sizdiff)
         compmat = circshiftwhole(culcmat,inm,sizdiff);
         compINP = INP;  compINP(logical(compmat)) = 0;
         compINP = compINP + compmat;
