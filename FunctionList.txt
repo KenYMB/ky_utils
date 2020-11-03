@@ -57,6 +57,7 @@ num2handle	% convert handle numbers into graphics object handles
 renewclim	% load figure file, update figure properties, and overwrite the figure
 resetfig	% reset figure window
 halfjet	% colormap constructed with half colors of jet
+sethistzero % adjust axis limits of histogram so that no bin is placed over zero
 
 plotbox	% plot box/rectangle
 
