@@ -1,4 +1,4 @@
-%% ver. 20200204
+%% ver. 20210105
 
 SetupMyFunction	% add functions below to search path
 
@@ -44,6 +44,7 @@ decimate_col	% compute decimate along the first array dimension
 nearestpoint
 nanrms
 corrpair
+findtable
 
 setboundsinfunc	% set bounds in function and return NaN for arguments out of bounds
 
@@ -58,8 +59,12 @@ renewclim	% load figure file, update figure properties, and overwrite the figure
 resetfig	% reset figure window
 halfjet	% colormap constructed with half colors of jet
 sethistzero % adjust axis limits of histogram so that no bin is placed over zero
+colormapskew % output skewed colormap
+adjustplot  % adjust plot area not to stick out of the figure
 
 plotbox	% plot box/rectangle
+
+resetdir & reload current directory for the case of NAS trouble
 
 SelectAudioDevice	% show window to select an audio device for PsychPortAudio
 myKeyCheck	% reset keybord input for PTB
