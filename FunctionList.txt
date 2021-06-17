@@ -1,4 +1,4 @@
-%% ver. 20210105
+%% ver. 20210617
 
 SetupMyFunction	% add functions below to search path
 
@@ -44,7 +44,8 @@ decimate_col	% compute decimate along the first array dimension
 nearestpoint
 nanrms
 corrpair
-findtable
+findtable   % find row indices which contain the table contents
+amppow      % apply power and restore their sign
 
 setboundsinfunc	% set bounds in function and return NaN for arguments out of bounds
 
