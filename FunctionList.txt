@@ -45,6 +45,7 @@ nanrms
 corrpair
 findtable   % find row indices which contain the table contents
 amppow      % apply power and restore their sign
+circintarea % intersect area of two circles
 
 saveauto	% basically same as SAVE, but automatically adds '-v7.3' option
 savefigauto % save figure with the format of hgexport('factorystyle')
