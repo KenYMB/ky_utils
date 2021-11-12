@@ -1,19 +1,20 @@
-function  pink_data = pinknoise(n,AB,Fs,ty,Ff)
+function  noise_data = mknoisesgnl(n,AB,Fs,ty,Ff)
 
-% pink_data = pinknoise(n,AB,Fs,[ty],[Ff])
+% pink_data = mknoise(n,AB,Fs,[ty],[Ff])
 %
 % n : number of samples (seconds * Fs)
 % AB: Amplitude (0<AB<1)
 % Fs: sampling frequency
 % ty: type
-%     0 = pink noise (default)
-%     1 = white noise
+%     0 = white noise (default)
+%     1 = pink noise
 %     2 = brown noise
 % Ff: filtering frequency [low high] (default = [])
 %     if length(Ff)==1 -> it works as high pass filter
 
 % 20150611 Yuasa
-% 20191013 modify help & bug fix for filtering
+% 20191013 Yuasa - modify help & bug fix for filtering
+% 20211104 Yuasa - change function name
 
 warning('off','stats:lillietest:OutOfRangePHigh')
 
@@ -76,7 +77,7 @@ end
 S=fft(Sn);                    % ノイズの時間情報を周波数情報に変換
 S=abs(S).*F.^(1/2).*exp(1i*angle(S));  % フィルタリング
 iS=ifft(S);                    % 周波数情報を時間情報に変換
-pink_data = AB * real(iS) / max(abs(real(iS)));
+noise_data = AB * real(iS) / max(abs(real(iS)));
 
 warning('on','stats:lillietest:OutOfRangePHigh')
 if ifGauss; warning('Skip Lilliefors Test.'); end

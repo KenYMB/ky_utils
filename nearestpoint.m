@@ -1,10 +1,9 @@
 function    V = nearestpoint(Points)
 % NP = NEARESTPOINT(Points)
 % 
-% NEARESTPOINT computes the coordinate to which the total distance from
-% input coordinates comes to minimum. Points must be a matrix which is
-% contsructed with multiple row-vectors.
-% 
+% NEARESTPOINT computes a center location where the total distance from
+% all input points is minimum. Points is NxM array with N input point in
+% M-dimension coordinate.
 
 % 20181211 Yuasa
 

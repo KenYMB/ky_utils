@@ -1,25 +1,28 @@
 function data = nearlyeq(x,d,mode,k)
 % 
-% data = NEARLYEQ(x,d,mode,k)
+% data = NEARLYEQ(X,d)
+% data = NEARLYEQ(X,d,mode,n)
+%   returns the indices of X nearest to d
 % 
-% 指定した数値に最も近い数値をデータ群から探し出し、インデックスを返す
+% Inputs
+%   X     : scalar-array
+%   d     : scalar-value or scalar-array
+%   n     : returns the first n indices (default = 1)
+%           if 'all', it returns all indices where the value is nearest to d
+%   mode  :
+%       'normal' returns indices of the nearest values (default)
+%       'small'  returns indices of the nearest value which is smaller than d
+%       'large'  returns indices of the nearest value which is larger than d
+%       'both'   returns 'small' in data{:,:,1} and 'large' in data{:,:,2}
 % 
-% x       : 検索するデータ群
-% d       : 検索したい数値
-% k       : 該当が複数あった場合の出力数 (default = 1)
-%           'all'   全候補を出力
-% data    : 結果となる数値のxにおける要素番号
-%           'k≠1'時はcell出力
-%           'mode=both'時はcell出力
-% mode    : 'normal' 最も近い数値 (default)
-%           'small'  kより小さい数値
-%           'large'  kより大きい数値
-%           'both'   kを挟んで両サイドの数値
-%                    dataの3次元目に出力
+% Output
+%   data  : scalar-array of indices in X
+%           or cell-array containing the indices when 'n~=1' or 'mode=both'
 % 
 
 % 2014/07/28 Yuasa
-% 2015/04/08 dの複数入力に対応
+% 2015/04/08 Yuasa - enable scalar-array for d
+% 2021/08/26 Yuasa - returns empty when input is nan
 
 narginchk(2,4);
 
@@ -32,9 +35,7 @@ if ~strcmp(mode,'normal') && ~strcmp(mode,'small') && ~strcmp(mode,'large') && ~
 end
 
 inpsiz  = size(d);
-inpdim  = length(inpsiz);
-
-if inpdim > 2, error('input data must be 2-dim matrix'); end
+assert(ndims(d)<=2, 'd can be a scalar or a scalar-array matrix');
 
 if strcmp(mode,'both'),  data = cell([inpsiz 2]);
 else                     data = cell(inpsiz);
@@ -49,30 +50,32 @@ for icol = 1:inpsiz(2)
 
         switch mode
             case 'normal'
-                if isempty(xs), xs=xl(end); end
-                if isempty(xl), xl=xs(end); end
+                if isempty(xs) && isempty(xl),  xs = nan; xl = nan;
+                elseif isempty(xs), xs=xl(end);
+                elseif isempty(xl), xl=xs(end);
+                end
                 nearestN = abs(xs(1)-d(irow,icol)) <= abs(xl(1)-d(irow,icol));
                 data{irow,icol} = find(x == (xs(1)*nearestN + xl(1)*~nearestN));
             case 'small'
-                if min(x(:)) > d(irow,icol)
-                    data{irow,icol}=[];
+                if min(x(:)) > d(irow,icol) || isempty(xs)
+                    data{irow,icol}=zeros(0,1);
                 else
                     data{irow,icol} = find(x == xs(1));
                 end
             case 'large'
-                if max(x(:)) < d(irow,icol)
-                    data{irow,icol}=[];
+                if max(x(:)) < d(irow,icol) || isempty(xl)
+                    data{irow,icol}=zeros(0,1);
                 else
                     data{irow,icol} = find(x == xl(1));
                 end
             case 'both'
-                if min(x(:)) > d(irow,icol)
-                    data{irow,icol,1}=[];
+                if min(x(:)) > d(irow,icol) || isempty(xs)
+                    data{irow,icol,1}=zeros(0,1);
                 else
                     data{irow,icol,1} = find(x == xs(1));
                 end
-                if max(x(:)) < d(irow,icol)
-                    data{irow,icol,2}=[];
+                if max(x(:)) < d(irow,icol) || isempty(xl)
+                    data{irow,icol,2}=zeros(0,1);
                 else
                     data{irow,icol,2} = find(x == xl(1));
                 end

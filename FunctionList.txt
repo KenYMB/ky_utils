@@ -23,6 +23,7 @@ int2ordinal	% convert positive integer to ordinal character vector.
 invrotmat3D	% estimate rotation axis and angle from three dimensional rotation matrix
 limits	% apply upper and lower limits on input components
 isorth	% determin whether input is orthogonal system
+mknoisesgnl % output white/pink/brown noise
 mail	% send an e-mail
 mgcd	% estimate common decimal divisor
 mk_sigmoid	% sigmoid function
