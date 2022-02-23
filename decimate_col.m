@@ -53,7 +53,7 @@ function odata = decimate_col(idata,r,nfilt,option,dim,nanflag)
 %         John Wiley & Sons, 1979, Chap. 8.3.
 
 % 20200203 Yuasa: modified from DECIMATE to apply matrix
-% 20201214 YUasa: ignore nan option
+% 20201214 Yuasa: ignore nan option
 
 narginchk(2,6);
 error(nargoutchk(0,1,nargout,'struct'));

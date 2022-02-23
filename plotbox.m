@@ -29,6 +29,7 @@ function    p = plotbox(h,xbounds,ybounds,boxcol,varargin)
 % See also PATCH, RECTANGLE.
 
 % 20200203 Yuasa
+% 20220106 Yuasa - minor bug fix
 
 %-- check arguments
 narginchk(2,inf);
@@ -68,7 +69,8 @@ for iplt = 1:nboxes
     xpos = xbounds{iplt}([1 2 2 1]);
     ypos = ybounds{iplt}([1 1 2 2]);
     fcol = boxcol{iplt};
-    switch fcol
+    if ischar(fcol)
+      switch fcol
         case {'none'}
             fcol = 'white';
             options = {'FaceColor','none','EdgeColor','k'};
@@ -76,6 +78,10 @@ for iplt = 1:nboxes
             fcol = 'white';
             options = {'FaceColor',[0.5 0.5 0.5],'EdgeColor','none'};
         otherwise
+            %-- not plot edge as default
+            options = {'EdgeColor','none'};
+      end
+    else
             %-- not plot edge as default
             options = {'EdgeColor','none'};
     end
