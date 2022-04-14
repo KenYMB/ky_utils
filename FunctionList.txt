@@ -70,6 +70,9 @@ sethistzero % adjust axis limits of histogram so that no bin is placed over zero
 colormapskew % output skewed colormap
 adjustplot  % adjust plot area not to stick out of the figure
 
+violinplotsplit  % plots violin plots separately in left and right sides
+		% dependes on VIOLINHALF, vinolinplot
+
 plotbox	% plot box/rectangle
 
 resetdir & reload current directory for the case of NAS trouble
