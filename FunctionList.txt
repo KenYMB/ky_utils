@@ -69,6 +69,7 @@ halfjet	% colormap constructed with half colors of jet
 sethistzero % adjust axis limits of histogram so that no bin is placed over zero
 colormapskew % output skewed colormap
 adjustplot  % adjust plot area not to stick out of the figure
+realignYLabels  % realigns horizontal positions of y labels
 
 plotbox	% plot box/rectangle
 
