@@ -19,8 +19,9 @@ function savefigauto(fig, filename, varargin)
 %-- parameter
 narginchk(2,inf);
 
-isvec = ismember(varargin,'-vector');
-varargin(isvec) = [];
+optidx = find(cellfun(@ischar,varargin));
+isvec = ismember(varargin(optidx),'-vector');
+varargin(optidx(isvec)) = [];
 nopts = nargin - 2 - sum(isvec);
 isvec = any(isvec);
 
