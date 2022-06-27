@@ -46,7 +46,7 @@ end
 %-- find 'end'
 for iinp = 1:length(varargin)
     if ischar(varargin{iinp}) && ~strcmp(varargin{iinp},':')
-        if iinp > ndims(datamat),   dimsiz = 1;
+        if iinp > ndims(datamat),   dimsiz = '1';
         else,                       dimsiz = num2str(size(datamat,iinp));
         end
         varargin{iinp} = strrep(varargin{iinp},'end',dimsiz);
