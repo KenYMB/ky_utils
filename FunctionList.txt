@@ -39,6 +39,7 @@ rmempty	% remove empty components
 rotmat3D	% compute three dimensional rotation matrix
 rounddeci	% round to nearest decimal
 roundnear	% replace matrix elements with the nearest values in input list
+surrounds   % returns [floor(min(X)), ceil(max(X))]
 sbjdlginp	% applied function of INPUTDLG
 decimate_col	% compute decimate along the first array dimension
 nearestpoint
