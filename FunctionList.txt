@@ -50,7 +50,7 @@ amppow      % apply power and restore their sign
 circintarea % intersect area of two circles
 geostd      % geometric standard deviation
 geosem      % geometric standard error
-
+mregresslag % compute mldivide with lag
 
 saveauto	% basically same as SAVE, but automatically adds '-v7.3' option
 savefigauto % save figure with the format of hgexport('factorystyle')
