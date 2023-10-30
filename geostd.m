@@ -58,7 +58,7 @@ end
 nargoutchk(0,2);
 
 % Take the n-th root of the product of elements of X, along dimension DIM.
-y = exp(std(log(x),varargin{:}));
+y = exp( std(log(x),varargin{:}) );
 
 if nargout <= 1
     varargout{1} = y;

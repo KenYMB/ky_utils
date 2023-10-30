@@ -48,6 +48,7 @@ corrpair
 findtable   % find row indices which contain the table contents
 amppow      % apply power and restore their sign
 circintarea % intersect area of two circles
+sem         % standard error
 geostd      % geometric standard deviation
 geosem      % geometric standard error
 mregresslag % compute mldivide with lag

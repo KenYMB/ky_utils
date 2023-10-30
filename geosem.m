@@ -50,30 +50,24 @@ function varargout = geosem(x,varargin)
 % 
 %   See also GEOSTD, GEOMEAN.
 
+%   Dependents: SEM
+
 %   20211221 Yuasa
+%   20231030 Yuasa: Separate out SEM.
 
 if any(x(:) < 0) || ~isreal(x)
     error(message('stats:geomean:BadData'))
 end
 nargoutchk(0,2);
-
-omitnan = ismember('omitnan',varargin(cellfun(@ischar,varargin)));
-
-if nargin < 3
-    % Figure out which dimension sum will work along.
-    dim = find(size(x) ~= 1, 1);
-    if isempty(dim), dim = 1; end
+if ~exist('sem.m','file')
+    error('Please verify if you have the function SEM.');
 else
-   dim = varargin{2};
-end
-if omitnan     
-    d_num = mysize(x, dim) - matlab.internal.math.countnan(x, dim);
-else
-    d_num = mysize(x, dim);
+    assert(strcmpi(fileparts(mfilename('fullpath')),fileparts(which('sem'))),...
+        'The function SEM might be loaded from wrong location.');
 end
 
 % Take the n-th root of the product of elements of X, along dimension DIM.
-y = exp( std(log(x),varargin{:}) ./ sqrt(d_num) );
+y = exp( sem(log(x),varargin{:}) );
 
 if nargout <= 1
     varargout{1} = y;
@@ -84,20 +78,3 @@ else
     varargout{1} = m - yn;
     varargout{2} = yp - m;
 end
-
-
-
-function s = mysize(x, dim)
-if isnumeric(dim) || islogical(dim)
-    if isscalar(dim)
-        s = size(x,dim);
-    else
-        s = size(x,dim(1));
-        for i = 2:length(dim)
-            s = s * size(x,dim(i));
-        end
-    end
-else
-    s = numel(x);
-end
-
