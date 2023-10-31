@@ -1,85 +1,103 @@
-%% ver. 20220222
+%% ver. 20231031
 
+%% Function setup
 SetupKyUtils	% add functions below to search path
 
+
+%% System
+resetdir 	% reload current directory for the case of NAS trouble
+error_backtraceoff	% output ERROR without back trace
+mail		% send an e-mail
+saveauto	% basically same as SAVE, but automatically adds '-v7.3' option
+savefigauto 	% save figure with the format of hgexport('factorystyle')
+
+
+%% Utilities
 SetDefault	% set default value for variable
+getfilelist	% list folder contents as cellstr array
+setboundsinfunc	% set bounds in function and return NaN for arguments out of bounds
 cellfind	% find patterns from cell array
 cellstrfind	% find strings from cellstr array
 cellstrsplit	% split strings in cellstr array
-colorMat	% apply color vector to the input matrix
+replmat     	% replace a part of matrix with other matrix
+arrangeinrect	% estimate suitable rencangle for subplot
+rmempty		% remove empty components 
+
+
+%% Math
 dnum2hms	% converts serial date number to time
-easyfilt	% roughly design and apply butterworth filter
-error_backtraceoff	% output ERROR without back trace
-fit_psychometric	% compute sigmoid fitting without Curve Fitting Toolbox
-fit_psychometric_gpu	%% unfinished %%
+int2ordinal	% convert positive integer to ordinal character vector.
 getelement	% output specified elements of matrix
 replelement	% replace specified elements of matrix with specified value
 findarray	% search num-array from the input matrix
-replmat     % replace a part of matrix with other matrix
 meanelement	% means of the adjacent elements
-getfilelist	% list folder contents as cellstr array
-imcolsample	% show color sample
-int2ordinal	% convert positive integer to ordinal character vector.
+rotmat3D	% compute three dimensional rotation matrix
 invrotmat3D	% estimate rotation axis and angle from three dimensional rotation matrix
-limits	% apply upper and lower limits on input components
-isorth	% determin whether input is orthogonal system
-mknoisesgnl % output white/pink/brown noise
-mail	% send an e-mail
-mgcd	% estimate common decimal divisor
-mk_sigmoid	% sigmoid function
-modmod	% compute MOD and then replace 0 with the modulus
-naneq	% equality, considering nans and empties
+isorth		% determin whether input is orthogonal system
+mgcd		% estimate common decimal divisor
+modmod		% compute MOD and then replace 0 with the modulus
+naneq		% equality, considering nans and empties
 nearlyeq	% find approximately equal value and return the index
 normalizeV	% inp/sum(inp)
-npermsk	% compute partial permutation
+npermsk		% compute partial permutation
 num2cellstr	% nvert numeric array into cellstr array
 path_rel2abs	% convert relative path into absolute path
 readtablestr	% create table from file
-rmempty	% remove empty components 
-rotmat3D	% compute three dimensional rotation matrix
 rounddeci	% round to nearest decimal
 roundnear	% replace matrix elements with the nearest values in input list
-surrounds   % returns [floor(min(X)), ceil(max(X))]
-sbjdlginp	% applied function of INPUTDLG
 decimate_col	% compute decimate along the first array dimension
-nearestpoint
-nanrms
-corrpair
-findtable   % find row indices which contain the table contents
-amppow      % apply power and restore their sign
-circintarea % intersect area of two circles
-sem         % standard error
-geostd      % geometric standard deviation
-geosem      % geometric standard error
-mregresslag % compute mldivide with lag
+nearestpoint	% 
+surrounds   	% returns [floor(min(X)), ceil(max(X))]
+limits		% apply upper and lower limits on input components
+corrpair	% 
+findtable   	% find row indices which contain the table contents
+amppow      	% apply power and restore their sign
+circintarea 	% intersect area of two circles
+sem         	% standard error
+geostd      	% geometric standard deviation
+geosem      	% geometric standard error
+nanrms		% compute RMS excluding NaN
+mregresslag 	% compute mldivide with lag
 
-saveauto	% basically same as SAVE, but automatically adds '-v7.3' option
-savefigauto % save figure with the format of hgexport('factorystyle')
 
-setboundsinfunc	% set bounds in function and return NaN for arguments out of bounds
+%% Signal Processing
+easyfilt	% roughly design and apply butterworth filter
+mk_sigmoid	% sigmoid function
+fit_psychometric	% compute sigmoid fitting without Curve Fitting Toolbox
+fit_psychometric_gpu	%% unfinished %%
+mknoisesgnl % output white/pink/brown noise
 
-arrangeinrect	% estimate suitable rencangle for subplot
+
+%% Color
+colorMat	% apply color vector to the input matrix
+imcolsample	% show color sample
+
+
+%% Plotting
+errorshade	% plot data with error shading
 bandplotH_avg	% plot averaged line with error bands
-clim	% set color limits for a figure
-figsize	% modify figure window size
-handle2num	% convert graphics object handles into handle numbers
-hide	% hide figure window
-num2handle	% convert handle numbers into graphics object handles
-renewclim	% load figure file, update figure properties, and overwrite the figure
-resetfig	% reset figure window
-halfjet	% colormap constructed with half colors of jet
-sethistzero % adjust axis limits of histogram so that no bin is placed over zero
-colormapskew % output skewed colormap
-adjustplot  % adjust plot area not to stick out of the figure
+plotbox		% plot box/rectangle
+
+
+%% Figure
+adjustplot  	% adjust plot area not to stick out of the figure
 realignYLabels  % realigns horizontal positions of y labels
+clim		% set color limits for a figure
+figsize		% modify figure window size
+handle2num	% convert graphics object handles into handle numbers
+num2handle	% convert handle numbers into graphics object handles
+hide		% hide figure window
+resetfig	% reset figure window
+sethistzero 	% adjust axis limits of histogram so that no bin is placed over zero
+renewclim	% load figure file, update figure properties, and overwrite the figure
+halfjet		% colormap constructed with half colors of jet
+colormapskew 	% output skewed colormap
 
-plotbox	% plot box/rectangle
 
-resetdir & reload current directory for the case of NAS trouble
-
+%% Psychology Experiment
+sbjdlginp	% applied function of INPUTDLG
 SelectAudioDevice	% show window to select an audio device for PsychPortAudio
 myKeyCheck	% reset keybord input for PTB
-
 SetupMRVista	% add MRVista toolbox to search path
 
 
