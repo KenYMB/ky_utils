@@ -248,6 +248,10 @@ for k = 1:n
         stylepv{:},...
         extrapairs{k,:});
 end
+% Move plot in front of shading
+try %#ok<TRYNC> 
+   uistack(h(1,:),'top');
+end
 
 if ~hold_state
     set(cax,'Box','on');
