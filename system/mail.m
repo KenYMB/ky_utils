@@ -1,19 +1,23 @@
-function mail(sendmessage)
+function mail(sendmessage, to_address)
 
-% send a mail
+% MAIL(sendmessage, [to_address])
+%   sends an email with message.
+%   
+%   Need to modify 'mail_template' appropreately in advance.
 % 
 % 20170221 Yuasa: modified
 % 20171103 Yuasa: script -> function
+% 20231108 Yuasa: Clean up
 
-
+% Dependency: mail_template
 
 %%
 %{
 %%% SMTP Settings
 %-- SMTP Server
-setpref( 'Internet', 'SMTP_Server', 'mail.nict.go.jp');
+setpref( 'Internet', 'SMTP_Server', '*******');
 %-- SMTP Username
-setpref( 'Internet', 'SMTP_Username', 'm1670005');
+setpref( 'Internet', 'SMTP_Username', '*******');
 %-- SMTP Password
 setpref( 'Internet', 'SMTP_Password', '*******');
 %-- Sending address
@@ -23,11 +27,13 @@ global mail_properties
 mail_properties.ssh     = 'yes';
 %}
 %%
-%-- Select mail server
-mail_nict;
+%-- Initial setup of the email server
+global mail_properties
+if isempty(mail_properties)
+    mail_template;
+end
 
 %-- SSL Settings
-global mail_properties
 if ~isempty(mail_properties) && isfield(mail_properties,'ssh') && strcmp(mail_properties.ssh,'yes')
   props = java.lang.System.getProperties;
   props.setProperty('mail.smtp.auth','true');
@@ -36,18 +42,21 @@ if ~isempty(mail_properties) && isfield(mail_properties,'ssh') && strcmp(mail_pr
   props.setProperty('mail.smtp.socketFactory.port','465');
 end
 
+%-- Setup email address to send
+if ~exist('to_address','var') || isempty(to_address)
+    clear to_address
+    global to_address %#ok<REDEFGI,TLEV>
+end
 
-%-- message
+%-- Set message
 if exist('sendmessage','var')
-    sendmessage = sprintf('èIóπ %s',sendmessage);
+    sendmessage = sprintf('%s\n\nSent from MATLAB',sendmessage);
 else
-    sendmessage = 'èIóπ';
+    sendmessage = 'Sent from MATLAB';
 end
 
 %-- Send a mail
-% sendmail('ken-ichi_y.magan-soil@docomo.ne.jp','MATLAB',sendmessage)
-% sendmail('kenichi_y@nifty.com','MATLAB',sendmessage)
-sendmail('yuasa.research@gmail.com','MATLAB',sendmessage)
+sendmail(to_address,'MATLAB',sendmessage)
 
 %-- Reset password
 setpref( 'Internet', 'SMTP_Password', '*******');

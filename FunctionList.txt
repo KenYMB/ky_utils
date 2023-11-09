@@ -9,7 +9,7 @@ resetdir 	% reload current directory for the case of NAS trouble
 error_backtraceoff	% output ERROR without back trace
 mail		% send an e-mail
 saveauto	% basically same as SAVE, but automatically adds '-v7.3' option
-savefigauto 	% save figure with the format of hgexport('factorystyle')
+path_rel2abs	% convert relative path into absolute path
 
 
 %% Utilities
@@ -19,20 +19,26 @@ setboundsinfunc	% set bounds in function and return NaN for arguments out of bou
 cellfind	% find patterns from cell array
 cellstrfind	% find strings from cellstr array
 cellstrsplit	% split strings in cellstr array
-replmat     	% replace a part of matrix with other matrix
 arrangeinrect	% estimate suitable rencangle for subplot
+istablefield 	% works as ISFIELD for TABLE.
+readtablestr	% create table from file
+findtable   	% find row indices which contain the table contents
+dnum2hms	% converts serial date number to time
+int2ordinal	% convert positive integer to ordinal character vector
+num2cellstr	% nvert numeric array into cellstr array
+
+
+%% Matrix
+nanfill		% A(idx)=nan; fill NaN to specified elements of matrix
 rmempty		% remove empty components 
+findarray	% search num-array from the input matrix
+replmat     	% replace a part of matrix with other matrix
+getelement	% output specified elements of matrix
+replelement	% A(idx)=d; replace specified elements of matrix with specified value
+meanelement	% means of the adjacent elements
 
 
 %% Math
-dnum2hms	% converts serial date number to time
-int2ordinal	% convert positive integer to ordinal character vector.
-getelement	% output specified elements of matrix
-replelement	% replace specified elements of matrix with specified value
-findarray	% search num-array from the input matrix
-meanelement	% means of the adjacent elements
-rotmat3D	% compute three dimensional rotation matrix
-invrotmat3D	% estimate rotation axis and angle from three dimensional rotation matrix
 isorth		% determin whether input is orthogonal system
 mgcd		% estimate common decimal divisor
 modmod		% compute MOD and then replace 0 with the modulus
@@ -40,19 +46,14 @@ naneq		% equality, considering nans and empties
 nearlyeq	% find approximately equal value and return the index
 normalizeV	% inp/sum(inp)
 npermsk		% compute partial permutation
-num2cellstr	% nvert numeric array into cellstr array
-path_rel2abs	% convert relative path into absolute path
-readtablestr	% create table from file
 rounddeci	% round to nearest decimal
 roundnear	% replace matrix elements with the nearest values in input list
 decimate_col	% compute decimate along the first array dimension
-nearestpoint	% 
+nearestpoint	% compute the point where the total distance from all input is minimum
 surrounds   	% returns [floor(min(X)), ceil(max(X))]
 limits		% apply upper and lower limits on input components
-corrpair	% 
-findtable   	% find row indices which contain the table contents
+corrpair	% 2-D pairwise correlation coefficient
 amppow      	% apply power and restore their sign
-circintarea 	% intersect area of two circles
 sem         	% standard error
 geostd      	% geometric standard deviation
 geosem      	% geometric standard error
@@ -60,17 +61,25 @@ nanrms		% compute RMS excluding NaN
 mregresslag 	% compute mldivide with lag
 
 
+%% Geometry
+circintarea 	% intersect area of two circles
+rotmat3D	% compute three dimensional rotation matrix
+invrotmat3D	% estimate rotation axis and angle from three dimensional rotation matrix
+
+
 %% Signal Processing
 easyfilt	% roughly design and apply butterworth filter
 mk_sigmoid	% sigmoid function
 fit_psychometric	% compute sigmoid fitting without Curve Fitting Toolbox
 fit_psychometric_gpu	%% unfinished %%
-mknoisesgnl % output white/pink/brown noise
+mknoisesgnl 	% output white/pink/brown noise
+cleanupsignal 	% denoise using N'th order Chebyshev Type I lowpass filter
 
 
 %% Color
 colorMat	% apply color vector to the input matrix
 imcolsample	% show color sample
+posnegcolormap  % combine two different colormaps for positive and negative values 
 
 
 %% Plotting
@@ -80,6 +89,7 @@ plotbox		% plot box/rectangle
 
 
 %% Figure
+savefigauto 	% save figure with the format of hgexport('factorystyle')
 adjustplot  	% adjust plot area not to stick out of the figure
 realignYLabels  % realigns horizontal positions of y labels
 clim		% set color limits for a figure
@@ -88,17 +98,22 @@ handle2num	% convert graphics object handles into handle numbers
 num2handle	% convert handle numbers into graphics object handles
 hide		% hide figure window
 resetfig	% reset figure window
-sethistzero 	% adjust axis limits of histogram so that no bin is placed over zero
 renewclim	% load figure file, update figure properties, and overwrite the figure
 halfjet		% colormap constructed with half colors of jet
 colormapskew 	% output skewed colormap
+sethistzero 	% adjust axis limits of histogram so that no bin is placed over zero
 
 
-%% Psychology Experiment
+%% Psychophysics Experiment
 sbjdlginp	% applied function of INPUTDLG
 SelectAudioDevice	% show window to select an audio device for PsychPortAudio
 myKeyCheck	% reset keybord input for PTB
+display_caliblation
+
+
+%% Toolbox
 SetupMRVista	% add MRVista toolbox to search path
+startupToolboxToolbox 	% toolbox toolbox
 
 
 %% External
