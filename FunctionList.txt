@@ -1,4 +1,4 @@
-%% ver. 20231031
+%% ver. 20240705
 
 %% Function setup
 SetupKyUtils	% add functions below to search path
@@ -59,6 +59,7 @@ geostd      	% geometric standard deviation
 geosem      	% geometric standard error
 nanrms		% compute RMS excluding NaN
 mregresslag 	% compute mldivide with lag
+minmax      % return min and max
 
 
 %% Geometry
