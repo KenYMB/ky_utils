@@ -23,8 +23,8 @@ else
 end
 
 % Take min and max
-mn = min(x,[],dim,varargin);
-mx = max(x,[],dim,varargin); 
+mn = min(x,[],dim,varargin{:});
+mx = max(x,[],dim,varargin{:}); 
 
 % Return
 mm = cat(catdim,mn,mx);
