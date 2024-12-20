@@ -39,7 +39,7 @@ end
 
 %-- suppress warning of hgexport
 warnid = 'MATLAB:hgexport:StyleSheetNotSupportedInFutureRelease';
-warnst = warning('query',warnid);
+warnst = warning('off',warnid);
 
 %-- save
 try
